@@ -1,4 +1,4 @@
-package com.example.menus;
+package front;
 
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;

@@ -1,23 +1,18 @@
-package com.example.menus;
+package front;
 
+import backend.user.Prueba;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.Effect;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
 
 public class FrontendController extends Application {
+    Prueba pru = new Prueba();
     LoginUsuarioController luc;
     RegistroUsuarioController ruc;
     VBox vb1 = new VBox();
@@ -60,6 +55,7 @@ public class FrontendController extends Application {
 
             stage.setScene(scene3);
         });
+        luc.b2.setOnAction(e -> System.out.println(pru.probarBackend("probando backend")));
         luc.b4.setOnAction(e -> stage.setScene(scene1));
         ruc.volver.setOnAction(e -> stage.setScene(scene2));
         stage.setTitle("BIBLIOTECA");

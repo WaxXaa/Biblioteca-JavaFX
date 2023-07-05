@@ -6,6 +6,6 @@ module com.example.menus {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
 
-    opens com.example.menus to javafx.fxml;
-    exports com.example.menus;
+    opens front to javafx.fxml;
+    exports front;
 }
