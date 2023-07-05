@@ -1,0 +1,29 @@
+Administrador
+-> listar libros e indicar si estan disponibles
+-> listar los prestamos realizados
+-> registrar prestamos (validar si el libro esta disponible antes de realizar el prestamo)
+-> registrar devoluciones
+-> realizar informes {
+    => cantidad de prestamos realizados
+    => los libros mas populares
+    => usuarios con mas prestamos
+}
+
+
+Usuario
+-> ingresar
+-> registrarse {
+    => nombre
+    => apellido
+    => direcion
+    => telefono
+    => correo
+}
+-> acceder al catalogo de la biblioteca
+-> buscar libro de interes {
+    => titulo
+    => autor
+    => genero
+}
+-> verificar su disponibilidad
+-> recibir notoficaciones de devoluciones proximas
