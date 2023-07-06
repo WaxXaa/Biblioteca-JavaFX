@@ -25,10 +25,9 @@ public class RegistroUsuarioController {
     Button volver = new Button("volver");
     Label titulo = new Label("Registrate");
     protected RegistroUsuarioController() {
-        gp1.addRow(0,l1,nombre);
-        gp1.addRow(1, l2, apellido);
-        gp1.addRow(2,l3,telefono,l4,direccion);
-        gp1.addRow(3,l5,email);
+        gp1.addRow(0,l1,nombre,l2,apellido);
+        gp1.addRow(1,l3,telefono,l4,direccion);
+        gp1.addRow(2,l5,email);
         vb1.getChildren().add(titulo);
         vb1.getChildren().add(gp1);
         vb1.getChildren().add(registrar);

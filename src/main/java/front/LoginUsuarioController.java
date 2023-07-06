@@ -1,10 +1,9 @@
 package front;
-
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -34,7 +33,6 @@ public class LoginUsuarioController {
         b4.setStyle("-fx-background-color: #dad7cd");
         b4.setCursor(Cursor.HAND);
 
-
         gp1.setAlignment(Pos.BASELINE_CENTER);
         vb2.setAlignment(Pos.CENTER);
         vb2.setSpacing(40);
@@ -45,5 +43,14 @@ public class LoginUsuarioController {
         gp1.addRow(1, l1,tx1);
         vb2.getChildren().add(gp1);
         vb2.getChildren().addAll(b2,b3,b4);
+
+    }
+    public void mostrarErrorAlIngresar() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error al ingresar");
+        alert.setHeaderText(null);
+        alert.setContentText("la cedula esta incorrecta");
+
+        alert.showAndWait();
     }
 }
