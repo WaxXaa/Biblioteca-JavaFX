@@ -1,13 +1,11 @@
 package front;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class LoginUsuarioController {
+public class LoginUsuario {
     GridPane gp1 = new GridPane();
     VBox vb2 = new VBox();
     Button b2 = new Button("Ingresar");
@@ -17,7 +15,7 @@ public class LoginUsuarioController {
     TextField tx1 = new TextField();
     Label l2 = new Label("E-mail:");
     TextField tx2 = new TextField();
-    protected LoginUsuarioController() {
+    protected LoginUsuario() {
 
         vb2.setStyle("-fx-background-color: #ffff");
         tx2.setMinSize(200, 30);

@@ -5,6 +5,7 @@ module com.example.menus {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
 
     opens front to javafx.fxml;
     exports front;

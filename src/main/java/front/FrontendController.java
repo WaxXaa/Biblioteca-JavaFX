@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 
 public class FrontendController extends Application {
     Prueba pru = new Prueba();
-    LoginUsuarioController luc;
-    RegistroUsuarioController ruc;
+    LoginUsuario loginUsuario;
+    RegistroUsuario registroUsuario;
     Administrador adm = new Administrador();
     VBox vb1 = new VBox();
     HBox hb1 = new HBox();
@@ -30,8 +30,8 @@ public class FrontendController extends Application {
 
     @Override
     public void start(Stage stage){
-        luc = new LoginUsuarioController();
-        ruc = new RegistroUsuarioController();
+        loginUsuario = new LoginUsuario();
+        registroUsuario = new RegistroUsuario();
         Button user = new Button("User");
         Button admin = new Button("Admin");
         Label lb1 = new Label("Bienvenido");
@@ -55,31 +55,31 @@ public class FrontendController extends Application {
 
 
         escenaBienvenida = new Scene(vb1, 1000,500);
-        escenaRegistroUsuario = new Scene(ruc.vb1,1000,500);
-        escenaIngresoUsuario = new Scene(luc.vb2, 1000, 500);
+        escenaRegistroUsuario = new Scene(registroUsuario.vb1,1000,500);
+        escenaIngresoUsuario = new Scene(loginUsuario.vb2, 1000, 500);
         escenaPrincipalAdministrador = new Scene(adm.mainLayout,1000,500);
         user.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
         admin.setOnAction(e -> stage.setScene(escenaPrincipalAdministrador));
-        //user controllers
-        luc.b3.setOnAction(e -> {
+        //controladores de usuario
+        loginUsuario.b3.setOnAction(e -> {
 
             stage.setScene(escenaRegistroUsuario);
         });
-        luc.b2.setOnAction(e -> {
+        loginUsuario.b2.setOnAction(e -> {
             boolean existeUsuario = false;
         // boolean existeUsuario = objeto de una clase del backend para el user.metodo para consultar si existe el usuario (luc.cedula.getValue());
         if(existeUsuario) {
             stage.setScene(escenaMainUsuario);
         }
         else {
-            luc.mostrarErrorAlIngresar();
+            loginUsuario.mostrarErrorAlIngresar();
         }
         });
-        luc.b4.setOnAction(e ->{
+        loginUsuario.b4.setOnAction(e ->{
             stage.setScene(escenaBienvenida);
         } );
-        ruc.volver.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
-
+        registroUsuario.volver.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
+        // controladores de administrador
         adm.volver.setOnAction(e -> stage.setScene(escenaBienvenida));
         stage.setTitle("BIBLIOTECA");
         stage.setScene(escenaBienvenida);

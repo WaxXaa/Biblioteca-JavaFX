@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class RegistroUsuarioController {
+public class RegistroUsuario {
     VBox vb1 = new VBox();
     GridPane gp1 = new GridPane();
     TextField nombre = new TextField();
@@ -24,7 +24,7 @@ public class RegistroUsuarioController {
     Button registrar = new Button("Registrarme");
     Button volver = new Button("volver");
     Label titulo = new Label("Registrate");
-    protected RegistroUsuarioController() {
+    protected RegistroUsuario() {
         gp1.addRow(0,l1,nombre,l2,apellido);
         gp1.addRow(1,l3,telefono,l4,direccion);
         gp1.addRow(2,l5,email);
