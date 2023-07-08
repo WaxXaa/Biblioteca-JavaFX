@@ -10,7 +10,7 @@ public class Conexion {
         Connection cnn;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            cnn= DriverManager.getConnection("jdbc:sqlserver://0.0.0.0:1433;databaseName=pubs;user="+VariablesSecretas.USERNAME+";password="+VariablesSecretas.PASSWORD+";encrypt=false");
+            cnn = DriverManager.getConnection("jdbc:sqlserver://0.0.0.0:1433;databaseName=Biblioteca;user="+VariablesSecretas.USERNAME+";password="+VariablesSecretas.PASSWORD+";encrypt=false");
             return cnn;
         }
         catch (ClassNotFoundException e){

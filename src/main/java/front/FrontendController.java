@@ -62,7 +62,11 @@ public class FrontendController extends Application {
         escenaIngresoUsuario = new Scene(loginUsuario.vb2, 1000, 500);
         escenaPrincipalAdministrador = new Scene(adm.mainLayout,1000,500);
         user.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
-        admin.setOnAction(e -> stage.setScene(escenaPrincipalAdministrador));
+        admin.setOnAction(e -> {
+            adm.borrarContenido();
+            adm.mostrarContenido();
+            stage.setScene(escenaPrincipalAdministrador);
+        });
         //controladores de usuario
         loginUsuario.b3.setOnAction(e -> {
 
@@ -83,13 +87,14 @@ public class FrontendController extends Application {
         } );
         registroUsuario.volver.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
         // controladores de administrador
-        adm.volver.setOnAction(e -> stage.setScene(escenaBienvenida));
+        adm.volver.setOnAction(e -> {
+
+            stage.setScene(escenaBienvenida);
+        });
         adm.opcionesListado.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
-                if(adm.opcionesListado.getSelectedToggle().getUserData().toString().equals("libros")) {
-
-                }
+                adm.mostrarContenido(adm.opcionesListado.getSelectedToggle().getUserData().toString());
             }
         });
 
