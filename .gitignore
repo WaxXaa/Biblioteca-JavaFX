@@ -38,4 +38,4 @@ build/
 .DS_Store
 
 
-./scr/main/java/backend/secret/VariablesSecretas.java
+scr/main/java/backend/secret/VariablesSecretas.java
