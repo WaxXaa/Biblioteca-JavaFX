@@ -2,11 +2,14 @@ package front;
 
 import backend.user.Prueba;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Toggle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -81,6 +84,17 @@ public class FrontendController extends Application {
         registroUsuario.volver.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
         // controladores de administrador
         adm.volver.setOnAction(e -> stage.setScene(escenaBienvenida));
+        adm.opcionesListado.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                if(adm.opcionesListado.getSelectedToggle().getUserData().toString().equals("libros")) {
+
+                }
+            }
+        });
+
+
+        // stage config
         stage.setTitle("BIBLIOTECA");
         stage.setScene(escenaBienvenida);
         stage.show();

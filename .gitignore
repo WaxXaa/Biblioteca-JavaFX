@@ -39,4 +39,4 @@ build/
 
 
 
-/scr/main/java/backend/secret
+./scr/main/java/backend/secret/
