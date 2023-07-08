@@ -12,6 +12,10 @@ public class OperacionesAdministrador {
     private Statement statement;
     private ResultSet recordSet;
     public LinkedList<Libros_set_get> listarTodosLosLibros() throws Exception{
+        /*
+        * este metodo es para listar todos los libros por orden alfabetico del titulo
+        * retorna una lista enlazada que almacena objetos de tipo Libros_set_get
+        * */
         Connection conn = null;
         LinkedList<Libros_set_get> listaLibros = new LinkedList<Libros_set_get>();
         try {

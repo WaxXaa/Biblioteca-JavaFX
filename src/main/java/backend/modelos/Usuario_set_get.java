@@ -1,5 +1,8 @@
 package backend.modelos;
-
+/*
+ * esta es la clase modelo de la tabla Usuario para almacenar en los objeos que se instancian de ella los datos de un Usuario
+ *
+ * */
 public final class Usuario_set_get {
     private String nombre;
     private String apellido;

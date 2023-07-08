@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 public class Administrador {
-    OperacionesAdministrador operaciones = new OperacionesAdministrador();
+    OperacionesAdministrador operacionesAdministrador = new OperacionesAdministrador();
     Libros_set_get libro = new Libros_set_get();
     HBox mainLayout = new HBox();
     VBox opcionesMenu = new VBox();
@@ -56,9 +56,12 @@ public class Administrador {
         volver.setStyle("-fx-background-color: #023047; -fx-text-fill: #ffff; -fx-font-size: 16px");
     }
     public void listarLibros() {
+        //este metodo es para desplegar todos los libros
+        //se usa el objeto operacionesAdministrador de la clase OperacionesAdministrador para obtener todos los libros de la base de datos
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        LinkedList<Libros_set_get> libros;
         try {
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-            LinkedList<Libros_set_get> libros = operaciones.listarTodosLosLibros();
+            libros = operacionesAdministrador.listarTodosLosLibros();
             listaLibros.addRow(0,new Label("Identificador"),new Label("Título"), new Label("Autor"), new Label("Género"), new Label("Editorial"), new Label("ISBN"), new Label("Fecha de Publicación"));
             for (int i = 0; i < libros.size(); i++) {
                 int id = libros.get(i).getId_libro();
@@ -72,8 +75,11 @@ public class Administrador {
                 listaLibros.addRow(i+1, new Label(String.valueOf(id)), new Label(titulo),new Label(autor), new Label(genero), new Label(editorial), new Label(isbn), new Label(fechaFromateada));
             }
         }catch (Exception e) {
+            //en caso de que ocurra un error al obtener los libros de la BD se desplegara un mensaje de error
+            //para desplegar el mensaje se llama a el metodo mostrarErrorAlListarLibros y se le pasa el mensaje
             mostrarErrorAlListarLibros("error al mostrar los libros \n" + e);
         }
+
     }
     public void mostrarErrorAlListarLibros(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -82,13 +88,19 @@ public class Administrador {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    //los metodos mostrar contenido estan sobrecargados ya que hacen lo mismo pero en contextos diferentes
     public void mostrarContenido(String opcion) {
+        //este metodo se llama cada vez que se detecta un cambio en los radioButton
+        //es decir cuando se interactua con las opciones de listar todos los libros o listar prestamos
         borrarContenido();
         if (opcion.equals(radioLibros.getUserData())) {
             listarLibros();
         }
     }
     public void mostrarContenido() {
+        //y este metodo lista es para cada vez que la escena del stage cambia a la escena principal del administrador
+        borrarContenido();
         listarLibros();
     }
     public void borrarContenido() {

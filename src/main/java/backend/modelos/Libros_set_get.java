@@ -1,5 +1,9 @@
 package backend.modelos;
 import java.sql.Date;
+/*
+* esta es la clase modelo de la tabla libros para almacenar en los objeos que se instancian de ella los datos de un libro
+*
+* */
 public class Libros_set_get {
     private String titulo;
     private String autor;

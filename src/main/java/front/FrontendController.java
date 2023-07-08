@@ -1,6 +1,5 @@
 package front;
 
-import backend.user.Prueba;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class FrontendController extends Application {
-    Prueba pru = new Prueba();
     LoginUsuario loginUsuario;
     RegistroUsuario registroUsuario;
     Administrador adm = new Administrador();
@@ -61,20 +59,24 @@ public class FrontendController extends Application {
         escenaRegistroUsuario = new Scene(registroUsuario.vb1,1000,500);
         escenaIngresoUsuario = new Scene(loginUsuario.vb2, 1000, 500);
         escenaPrincipalAdministrador = new Scene(adm.mainLayout,1000,500);
+
+        //estos son los evento al presionar los botones de la escena bienvenida
         user.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
         admin.setOnAction(e -> {
-            adm.borrarContenido();
             adm.mostrarContenido();
             stage.setScene(escenaPrincipalAdministrador);
         });
+
+
         //controladores de usuario
+
         loginUsuario.b3.setOnAction(e -> {
 
             stage.setScene(escenaRegistroUsuario);
         });
         loginUsuario.b2.setOnAction(e -> {
             boolean existeUsuario = false;
-        // boolean existeUsuario = objeto de una clase del backend para el user.metodo para consultar si existe el usuario (luc.cedula.getValue());
+        // boolean existeUsuario = aqui se llamara a un metodo para validar al usuario al ingresar
         if(existeUsuario) {
             stage.setScene(escenaMainUsuario);
         }
@@ -86,11 +88,15 @@ public class FrontendController extends Application {
             stage.setScene(escenaBienvenida);
         } );
         registroUsuario.volver.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
+
+
+
         // controladores de administrador
         adm.volver.setOnAction(e -> {
 
             stage.setScene(escenaBienvenida);
         });
+        // evento al cambiar si listar todos los libros o todos lo prestamos en la escena principal del administrador
         adm.opcionesListado.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
