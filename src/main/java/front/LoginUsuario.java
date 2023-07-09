@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 
 public class LoginUsuario {
     GridPane gp1 = new GridPane();
-    VBox vb2 = new VBox();
+    VBox mainLauoyt = new VBox();
     Button b2 = new Button("Ingresar");
     Button b3 = new Button("registrarse");
     Button b4 = new Button("volver");
@@ -17,7 +17,7 @@ public class LoginUsuario {
     TextField tx2 = new TextField();
     protected LoginUsuario() {
 
-        vb2.setStyle("-fx-background-color: #ffff");
+        mainLauoyt.setStyle("-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
         tx2.setMinSize(200, 30);
         tx1.setMinSize(200,30);
         l1.setStyle("-fx-font-size: 20px");
@@ -26,21 +26,21 @@ public class LoginUsuario {
         b2.setMinSize(100,30);
         b2.setCursor(Cursor.HAND);
         b3.setTranslateY(-30);
-        b3.setStyle("-fx-background-color: #ffff; -fx-text-fill: #219ebc");
+        b3.setStyle("-fx-background-color: transparent; -fx-text-fill: #32556E; -fx-font-size: 14px");
         b3.setCursor(Cursor.HAND);
         b4.setStyle("-fx-background-color: #dad7cd");
         b4.setCursor(Cursor.HAND);
 
         gp1.setAlignment(Pos.BASELINE_CENTER);
-        vb2.setAlignment(Pos.CENTER);
-        vb2.setSpacing(40);
+        mainLauoyt.setAlignment(Pos.CENTER);
+        mainLauoyt.setSpacing(40);
         gp1.setVgap(10);
         gp1.setHgap(20);
 
         gp1.addRow(0,l2,tx2);
         gp1.addRow(1, l1,tx1);
-        vb2.getChildren().add(gp1);
-        vb2.getChildren().addAll(b2,b3,b4);
+        mainLauoyt.getChildren().add(gp1);
+        mainLauoyt.getChildren().addAll(b2,b3,b4);
 
     }
     public void mostrarErrorAlIngresar() {

@@ -34,10 +34,14 @@ public class Administrador {
         opcionesMenu.getChildren().addAll(prestamo,devolucion,informes,volver);
         radioLibros.setToggleGroup(opcionesListado);
         radioPrestamos.setToggleGroup(opcionesListado);
+        radioLibros.setStyle("-fx-font-size:14px");
+        radioPrestamos.setStyle("-fx-font-size:14px");
         opcionesListado.selectToggle(radioLibros);
         opcionesListadoLayout.getChildren().addAll(radioLibros,radioPrestamos);
+        opcionesListadoLayout.setSpacing(20);
         scrollPane.setPrefSize(700,400);
         scrollPane.setContent(listaLibros);
+        scrollPane.setStyle("-fx-bacground-color: #edf1ff");
         listado.getChildren().addAll(opcionesListadoLayout,scrollPane);
         mainLayout.getChildren().addAll(opcionesMenu, listado);
         mainLayout.setStyle("-fx-padding: 20px;-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");

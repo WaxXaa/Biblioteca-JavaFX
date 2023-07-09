@@ -18,6 +18,7 @@ public class FrontendController extends Application {
     RegistroUsuario registroUsuario;
     Administrador adm = new Administrador();
     AdministradorRegistroPrestamo admRegistroPrestamo = new AdministradorRegistroPrestamo();
+    AdministradorRegistroDevolucion admRegistroDevolucion = new AdministradorRegistroDevolucion();
     VBox vb1 = new VBox();
     HBox hb1 = new HBox();
 
@@ -58,14 +59,15 @@ public class FrontendController extends Application {
         // se crean todas las escenas
         escenaBienvenida = new Scene(vb1, 1000,500);
         escenaRegistroUsuario = new Scene(registroUsuario.vb1,1000,500);
-        escenaIngresoUsuario = new Scene(loginUsuario.vb2, 1000, 500);
+        escenaIngresoUsuario = new Scene(loginUsuario.mainLauoyt, 1000, 500);
         escenaPrincipalAdministrador = new Scene(adm.mainLayout,1000,500);
         escenaAdministradorRegistro = new Scene(admRegistroPrestamo.mainLayout,1000,500);
+        escenaAdministradorDevolucion = new Scene(admRegistroDevolucion.mainLayout, 1000,500);
         //estos son los evento al presionar los botones de la escena bienvenida
         user.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
         admin.setOnAction(e -> {
-            adm.mostrarContenido();
             stage.setScene(escenaPrincipalAdministrador);
+            adm.mostrarContenido();
         });
 
 
@@ -97,8 +99,13 @@ public class FrontendController extends Application {
 
             stage.setScene(escenaBienvenida);
         });
+        //evento para dirigir a la escena de registro de prestamo
         adm.prestamo.setOnAction(e -> {
             stage.setScene(escenaAdministradorRegistro);
+        });
+        //evento para dirigir a la escena de registro de devoluciones
+        adm.devolucion.setOnAction(e -> {
+            stage.setScene(escenaAdministradorDevolucion);
         });
         // evento al cambiar si listar todos los libros o todos lo prestamos en la escena principal del administrador
         adm.opcionesListado.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
@@ -107,10 +114,15 @@ public class FrontendController extends Application {
                 adm.mostrarContenido(adm.opcionesListado.getSelectedToggle().getUserData().toString());
             }
         });
+        // evento para volverr de la escena de prestamo
         admRegistroPrestamo.volver.setOnAction(e -> {
             stage.setScene(escenaPrincipalAdministrador);
         });
 
+        // evento para volver de la escena de devoluciones
+        admRegistroDevolucion.volver.setOnAction(e -> {
+            stage.setScene(escenaPrincipalAdministrador);
+        });
         // stage config
         stage.setTitle("BIBLIOTECA");
         stage.setScene(escenaBienvenida);

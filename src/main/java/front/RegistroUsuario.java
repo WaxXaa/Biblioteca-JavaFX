@@ -39,7 +39,7 @@ public class RegistroUsuario {
         vb1.setSpacing(40);
 
         //estilos
-        vb1.setStyle("-fx-background-color: #ffff");
+        vb1.setStyle("-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
         l1.setStyle("-fx-font-size: 18px");
         l2.setStyle("-fx-font-size: 18px");
         l3.setStyle("-fx-font-size: 18px");
