@@ -1,5 +1,6 @@
 package front;
 
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
@@ -53,7 +54,11 @@ public class Administrador {
         prestamo.setStyle("-fx-background-color: #023047; -fx-text-fill: #ffff; -fx-font-size: 16px");
         devolucion.setStyle("-fx-background-color: #023047; -fx-text-fill: #ffff; -fx-font-size: 16px");
         informes.setStyle("-fx-background-color: #023047; -fx-text-fill: #ffff; -fx-font-size: 16px");
-        volver.setStyle("-fx-background-color: #023047; -fx-text-fill: #ffff; -fx-font-size: 16px");
+        volver.setStyle("-fx-background-color: #dad7cd");
+        prestamo.setCursor(Cursor.HAND);
+        devolucion.setCursor(Cursor.HAND);
+        informes.setCursor(Cursor.HAND);
+        volver.setCursor(Cursor.HAND);
     }
     public void listarLibros() {
         //este metodo es para desplegar todos los libros

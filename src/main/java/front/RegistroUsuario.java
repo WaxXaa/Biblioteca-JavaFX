@@ -23,7 +23,7 @@ public class RegistroUsuario {
     Label l5 = new Label("Correo");
     Button registrar = new Button("Registrarme");
     Button volver = new Button("volver");
-    Label titulo = new Label("Registrate");
+    Label titulo = new Label("Registrate!");
     protected RegistroUsuario() {
         gp1.addRow(0,l1,nombre,l2,apellido);
         gp1.addRow(1,l3,telefono,l4,direccion);
@@ -40,12 +40,13 @@ public class RegistroUsuario {
 
         //estilos
         vb1.setStyle("-fx-background-color: #ffff");
-        l1.setStyle("-fx-font-size: 20px");
-        l2.setStyle("-fx-font-size: 20px");
-        l3.setStyle("-fx-font-size: 20px");
-        l4.setStyle("-fx-font-size: 20px");
-        l5.setStyle("-fx-font-size: 20px");
-        titulo.setStyle("-fx-font-size: 20px");
+        l1.setStyle("-fx-font-size: 18px");
+        l2.setStyle("-fx-font-size: 18px");
+        l3.setStyle("-fx-font-size: 18px");
+        l4.setStyle("-fx-font-size: 18px");
+        l5.setStyle("-fx-font-size: 18px");
+        titulo.setStyle("-fx-font-size: 24px;-fx-font-weight: 600;");
+        titulo.setTranslateY(-50);
         nombre.setMinSize(200, 30);
         apellido.setMinSize(200, 30);
         telefono.setMinSize(200, 30);

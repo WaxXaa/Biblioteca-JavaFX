@@ -17,6 +17,7 @@ public class FrontendController extends Application {
     LoginUsuario loginUsuario;
     RegistroUsuario registroUsuario;
     Administrador adm = new Administrador();
+    AdministradorRegistroPrestamo admRegistroPrestamo = new AdministradorRegistroPrestamo();
     VBox vb1 = new VBox();
     HBox hb1 = new HBox();
 
@@ -54,12 +55,12 @@ public class FrontendController extends Application {
         hb1.getChildren().addAll(admin,user);
         vb1.getChildren().addAll(lb1,lb2,hb1);
 
-
+        // se crean todas las escenas
         escenaBienvenida = new Scene(vb1, 1000,500);
         escenaRegistroUsuario = new Scene(registroUsuario.vb1,1000,500);
         escenaIngresoUsuario = new Scene(loginUsuario.vb2, 1000, 500);
         escenaPrincipalAdministrador = new Scene(adm.mainLayout,1000,500);
-
+        escenaAdministradorRegistro = new Scene(admRegistroPrestamo.mainLayout,1000,500);
         //estos son los evento al presionar los botones de la escena bienvenida
         user.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
         admin.setOnAction(e -> {
@@ -96,6 +97,9 @@ public class FrontendController extends Application {
 
             stage.setScene(escenaBienvenida);
         });
+        adm.prestamo.setOnAction(e -> {
+            stage.setScene(escenaAdministradorRegistro);
+        });
         // evento al cambiar si listar todos los libros o todos lo prestamos en la escena principal del administrador
         adm.opcionesListado.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
@@ -103,7 +107,9 @@ public class FrontendController extends Application {
                 adm.mostrarContenido(adm.opcionesListado.getSelectedToggle().getUserData().toString());
             }
         });
-
+        admRegistroPrestamo.volver.setOnAction(e -> {
+            stage.setScene(escenaPrincipalAdministrador);
+        });
 
         // stage config
         stage.setTitle("BIBLIOTECA");
