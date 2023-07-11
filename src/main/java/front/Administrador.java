@@ -41,14 +41,14 @@ public class Administrador {
         opcionesListadoLayout.setSpacing(20);
         scrollPane.setPrefSize(700,400);
         scrollPane.setContent(listaLibros);
-        scrollPane.setStyle("-fx-bacground-color: #edf1ff");
+        scrollPane.setStyle("-fx-bacground-color: #f7f8ff");
         listado.getChildren().addAll(opcionesListadoLayout,scrollPane);
         mainLayout.getChildren().addAll(opcionesMenu, listado);
         mainLayout.setStyle("-fx-padding: 20px;-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
         mainLayout.setSpacing(40);
         opcionesMenu.setSpacing(40);
         listado.setSpacing(20);
-        listaLibros.setHgap(10);
+        listaLibros.setHgap(20);
         listaLibros.setVgap(5);
 
         prestamo.setMinSize(200,30);
@@ -71,7 +71,7 @@ public class Administrador {
         LinkedList<Libros_set_get> libros;
         try {
             libros = operacionesAdministrador.listarTodosLosLibros();
-            listaLibros.addRow(0,new Label("Identificador"),new Label("Título"), new Label("Autor"), new Label("Género"), new Label("Editorial"), new Label("ISBN"), new Label("Fecha de Publicación"));
+            listaLibros.addRow(0,new Label("Identificador"),new Label("Dispinibilidad"),new Label("Título"), new Label("Autor"), new Label("Género"), new Label("Editorial"), new Label("ISBN"), new Label("Fecha de Publicación"));
             for (int i = 0; i < libros.size(); i++) {
                 int id = libros.get(i).getId_libro();
                 String titulo = libros.get(i).getTitulo();
@@ -81,7 +81,18 @@ public class Administrador {
                 String isbn = libros.get(i).getIsbn();
                 Date fecha = libros.get(i).getFecha_publicacion();
                 String fechaFromateada = formato.format(fecha);
-                listaLibros.addRow(i+1, new Label(String.valueOf(id)), new Label(titulo),new Label(autor), new Label(genero), new Label(editorial), new Label(isbn), new Label(fechaFromateada));
+                String disponible = libros.get(i).getDispinibilidad();
+                Label disponibilidad = new Label();
+                if(disponible.equals("Disponible")) {
+                    disponibilidad.setText("✔ " + disponible);
+                    disponibilidad.setStyle("-fx-font-size: 14px; -fx-text-fill: #50AE5D");
+                }
+                else {
+                    disponibilidad.setText("❌ " + disponible);
+                    disponibilidad.setStyle("-fx-font-size: 14px; -fx-text-fill: #D16677");
+                }
+
+                listaLibros.addRow(i+1, new Label(String.valueOf(id)), disponibilidad, new Label(titulo),new Label(autor), new Label(genero), new Label(editorial), new Label(isbn), new Label(fechaFromateada));
             }
         }catch (Exception e) {
             //en caso de que ocurra un error al obtener los libros de la BD se desplegara un mensaje de error

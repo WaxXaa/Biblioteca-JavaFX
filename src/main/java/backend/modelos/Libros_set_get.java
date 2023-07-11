@@ -12,6 +12,7 @@ public class Libros_set_get {
     private Date fecha_publicacion;
     private String editorial;
     private int id_libro;
+    private String dispinibilidad;
 
     public String getTitulo() {
         return titulo;
@@ -67,5 +68,13 @@ public class Libros_set_get {
 
     public void setId_libro(int id_libro) {
         this.id_libro = id_libro;
+    }
+
+    public String getDispinibilidad() {
+        return dispinibilidad;
+    }
+
+    public void setDispinibilidad(String dispinibilidad) {
+        this.dispinibilidad = dispinibilidad;
     }
 }
