@@ -19,6 +19,7 @@ public class OperacionesUsuario {
             registro = recordset.next();          
             If(registro == False)
               throw new Exception("Correo Ingresado Incorrecto.");
+            
             else {  
               if(nom =! recordset.getString("nombre"){
               registro = false;
