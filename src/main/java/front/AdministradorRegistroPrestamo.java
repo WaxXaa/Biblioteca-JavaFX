@@ -27,7 +27,7 @@ public class AdministradorRegistroPrestamo {
         correo_lb.setStyle("-fx-font-size: 18px");
         id_txt.setMinSize(200, 30);
         nombre_txt.setMinSize(200, 30);
-        id_txt.setMinSize(200, 30);
+        correo_txt.setMinSize(200, 30);
         campos.addRow(0,id_lb,id_txt);
         campos.addRow(1,nombre_lb,nombre_txt);
         campos.addRow(2,correo_lb,correo_txt);

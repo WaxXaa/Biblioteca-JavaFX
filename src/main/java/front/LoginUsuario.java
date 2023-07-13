@@ -1,4 +1,6 @@
 package front;
+import backend.modelos.Usuario_set_get;
+import backend.user.OperacionesUsuario;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -6,20 +8,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class LoginUsuario {
+    OperacionesUsuario operacionesUsuario = new OperacionesUsuario();
     GridPane gp1 = new GridPane();
     VBox mainLauoyt = new VBox();
     Button b2 = new Button("Ingresar");
     Button b3 = new Button("registrarse");
     Button b4 = new Button("volver");
     Label l1 = new Label("nombre:");
-    TextField tx1 = new TextField();
+    TextField nombre = new TextField();
     Label l2 = new Label("E-mail:");
-    TextField tx2 = new TextField();
+    TextField correo = new TextField();
     protected LoginUsuario() {
 
         mainLauoyt.setStyle("-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
-        tx2.setMinSize(200, 30);
-        tx1.setMinSize(200,30);
+        correo.setMinSize(200, 30);
+        nombre.setMinSize(200,30);
         l1.setStyle("-fx-font-size: 20px");
         l2.setStyle("-fx-font-size: 20px");
         b2.setStyle("-fx-background-color: #023047; -fx-text-fill: #ffff; -fx-font-size: 16px");
@@ -37,18 +40,39 @@ public class LoginUsuario {
         gp1.setVgap(10);
         gp1.setHgap(20);
 
-        gp1.addRow(0,l2,tx2);
-        gp1.addRow(1, l1,tx1);
+        gp1.addRow(0,l2,correo);
+        gp1.addRow(1, l1,nombre);
         mainLauoyt.getChildren().add(gp1);
         mainLauoyt.getChildren().addAll(b2,b3,b4);
 
     }
-    public void mostrarErrorAlIngresar() {
+    public String obtenerCorreo() {
+        return correo.getText();
+    }
+    public String obtenerNombre() {
+        return nombre.getText();
+    }
+    public boolean ingresar(String nombre, String correo, Usuario usuario) throws Exception{
+        Usuario_set_get u;
+        try{
+            u = operacionesUsuario.verificarUsuario(nombre,correo);
+            if (u == null)
+                return false;
+            usuario.setUsuario(u);
+            return true;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    public void mostrarErrorAlIngresar(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error al ingresar");
-        alert.setHeaderText(null);
-        alert.setContentText("la cedula esta incorrecta");
-
+        alert.setTitle("Error");
+        alert.setHeaderText("lo sentimos, Ha ocurrido un error al ingresar");
+        alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+    public void resetearInput() {
+        nombre.setText("");
+        correo.setText("");
     }
 }

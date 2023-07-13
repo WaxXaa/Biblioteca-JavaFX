@@ -64,11 +64,12 @@ public class Administrador {
         informes.setCursor(Cursor.HAND);
         volver.setCursor(Cursor.HAND);
     }
-    public void listarLibros() {
+    public void listarLibros() throws Exception{
         //este metodo es para desplegar todos los libros
         //se usa el objeto operacionesAdministrador de la clase OperacionesAdministrador para obtener todos los libros de la base de datos
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         LinkedList<Libros_set_get> libros;
+
         try {
             libros = operacionesAdministrador.listarTodosLosLibros();
             listaLibros.addRow(0,new Label("Identificador"),new Label("Dispinibilidad"),new Label("Título"), new Label("Autor"), new Label("Género"), new Label("Editorial"), new Label("ISBN"), new Label("Fecha de Publicación"));
@@ -95,11 +96,8 @@ public class Administrador {
                 listaLibros.addRow(i+1, new Label(String.valueOf(id)), disponibilidad, new Label(titulo),new Label(autor), new Label(genero), new Label(editorial), new Label(isbn), new Label(fechaFromateada));
             }
         }catch (Exception e) {
-            //en caso de que ocurra un error al obtener los libros de la BD se desplegara un mensaje de error
-            //para desplegar el mensaje se llama a el metodo mostrarErrorAlListarLibros y se le pasa el mensaje
-            mostrarErrorAlListarLibros("error al mostrar los libros \n" + e);
+            throw e;
         }
-
     }
     public void mostrarErrorAlListarLibros(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -110,18 +108,26 @@ public class Administrador {
     }
 
     //los metodos mostrar contenido estan sobrecargados ya que hacen lo mismo pero en contextos diferentes
-    public void mostrarContenido(String opcion) {
+    public void mostrarContenido(String opcion)throws Exception {
         //este metodo se llama cada vez que se detecta un cambio en los radioButton
         //es decir cuando se interactua con las opciones de listar todos los libros o listar prestamos
         borrarContenido();
         if (opcion.equals(radioLibros.getUserData())) {
-            listarLibros();
+            try {
+                listarLibros();
+            }catch (Exception e) {
+                throw e;
+            }
         }
     }
-    public void mostrarContenido() {
+    public void mostrarContenido() throws Exception {
         //y este metodo lista es para cada vez que la escena del stage cambia a la escena principal del administrador
         borrarContenido();
-        listarLibros();
+        try {
+            listarLibros();
+        }catch (Exception e) {
+            throw e;
+        }
     }
     public void borrarContenido() {
         listaLibros.getChildren().clear();
