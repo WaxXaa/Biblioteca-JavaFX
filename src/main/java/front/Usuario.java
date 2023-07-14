@@ -35,9 +35,10 @@ public class Usuario {
     Rectangle rect = new Rectangle();
     ImageInput imgV;
     Group imgG;
+
     public Usuario() {
         try {
-            Image img = new Image(new FileInputStream("ruta absoluta\\notification.png"));
+            Image img = new Image(new FileInputStream("\\notification.png"));
             imgV = new ImageInput(img);
         } catch (Exception e) {
 
@@ -52,38 +53,42 @@ public class Usuario {
         choiceBox.getItems().add("Género");
         mainLayout.setAlignment(Pos.BASELINE_CENTER);
         mainLayout.setSpacing(30);
-        mainLayout.setStyle("-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
+        mainLayout.setStyle(
+                "-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
         listaLibros.setHgap(20);
         listaLibros.setVgap(5);
-        scrollPane.setPrefSize(800,400);
+        scrollPane.setPrefSize(800, 400);
         scrollPane.setContent(listaLibros);
         imgG.setTranslateX(30);
         rect.setCursor(Cursor.HAND);
         scrollPane.setStyle("-fx-bacground-color: #f7f8ff");
         barraBusqueda.setAlignment(Pos.BASELINE_CENTER);
-        textField.setMinSize(300,30);
+        textField.setMinSize(300, 30);
         volver.setStyle("-fx-background-color: #dad7cd");
         volver.setTranslateX(-30);
         volver.setCursor(Cursor.HAND);
         choiceBox.setStyle("-fx-background-color: transparent");
         choiceBox.setValue("ordenar por");
-        barraBusqueda.getChildren().addAll(textField,choiceBox);
+        barraBusqueda.getChildren().addAll(textField, choiceBox);
         nombre.setStyle("-fx-font-size: 18px;-fx-font-weight: 600;");
         saludo.setStyle("-fx-text-fill: #e5be01;-fx-font-size: 25px");
         bienvenida.setSpacing(-50);
         bienvenida.setAlignment(Pos.BASELINE_CENTER);
-        bienvenida.getChildren().addAll(nombre,saludo);
-        primeraFila.getChildren().addAll(volver,bienvenida,imgG);
+        bienvenida.getChildren().addAll(nombre, saludo);
+        primeraFila.getChildren().addAll(volver, bienvenida, imgG);
         primeraFila.setSpacing(300);
         primeraFila.setAlignment(Pos.BASELINE_CENTER);
-        mainLayout.getChildren().addAll(primeraFila,barraBusqueda,scrollPane);
+        mainLayout.getChildren().addAll(primeraFila, barraBusqueda, scrollPane);
     }
+
     public void setUsuario(Usuario_set_get usuario) {
         this.usuario = usuario;
     }
+
     public void personalizarNombre() {
-        nombre.setText( "Bienvenido " + usuario.getNombre());
+        nombre.setText("Bienvenido " + usuario.getNombre());
     }
+
     public void borrarNombre() {
         nombre.setText("");
     }
