@@ -89,5 +89,33 @@ public class OperacionesUsuario {
                 cnn.close();
         }
     }
+
+    //Listado de libros 
+    public LinkedList<Libros_set_get> ListaLibrosUser () throws Exception {
+        Connection cnn = null;
+        //Metodo que listara los libros para el usuario por nombre, autor y genero 
+        LinkedList<Libros_set_get> ListaLibrosUser = new LinkedList<Libros_set_get>();
+        try {
+            cnn = Conexion.establecerConexion();
+            stmt = cnn.createStatement();
+            recordSet = statement.executeQuery (
+                "SELECT titulo , autor , genero FROM Libro;" )
+            while (recordSet.next()) {
+                Libros_set_get libro = new Libros_set_get();
+
+                libro.setTitulo(recordSet.getString("titulo"));
+                libro.setAutor(recordSet.getString("autor"));
+                libro.setGenero(recordSet.getString("genero")); 
+            }
+            return ListaLibrosUser; 
+            } catch (SQLException e) {
+                throw e;
+            }catch (Exception e) {
+            throw e;
+            } finally {
+                if (cnn != null)
+                cnn.close();
+            }
+    }
 }
 
