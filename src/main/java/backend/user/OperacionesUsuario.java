@@ -117,5 +117,38 @@ public class OperacionesUsuario {
                 cnn.close();
             }
     }
+
+    //Listado de libros por devolver 
+    public LinkedList<Libros_set_get> ListaDevolucion() throws Exception {
+        Connection cnn = null;
+        //Metodo que listara los libros por devolver para el usuario con titulo, autor, Fprestamo y Fdevolucion de la mas antigua a la mas reciente
+        LinkedList<Prestamo_set_get> ListaDevolucion = new LinkedList<Prestamo_set_get>();
+        try {
+            cnn = Conexion.establecerConexion();
+            stmt = cnn.createStatement();
+            recordSet = statement.executeQuery (
+                "SELECT Libro.titulo, Libro.autor, Prestamos.fecha_prestamo, Prestamos.fecha_devolucion
+                FROM Libro
+                JOIN Prestamos ON Libro.id_libro = Prestamos.id_libro
+                ORDER BY Prestamos.fecha_prestamo ASC, Prestamos.fecha_devolucion ASC;" )
+            while (recordSet.next()) {
+                Prestamo_set_get devolucion = new Prestamo_set_get();
+
+                libro.setTitulo(recordSet.getString("titulo"));
+                libro.setAutor(recordSet.getString("autor"));
+                prestamos.setFecha_prestamo(recordSet.getDate("fecha_prestamo")); 
+                prestamos.setFecha_devolucion(recordSet.getDate("fecha_devolucion")); 
+            }
+            return ListaDevolucion; 
+            } catch (SQLException e) {
+                throw e;
+            }catch (Exception e) {
+            throw e;
+            } finally {
+                if (cnn != null)
+                cnn.close();
+            }
+    }
+
 }
 
