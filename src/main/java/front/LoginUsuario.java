@@ -51,13 +51,14 @@ public class LoginUsuario {
     public String obtenerNombre() {
         return nombre.getText();
     }
-    public boolean ingresar(String nombre, String correo, Usuario usuario, OperacionesUsuario operacionesUsuario) throws Exception{
+    public boolean ingresar(String nombre, String correo, Usuario usuario, Notificaciones notificaciones, OperacionesUsuario operacionesUsuario) throws Exception{
         Usuario_set_get u;
         try{
             u = operacionesUsuario.verificarUsuario(nombre,correo);
             if (u == null)
                 return false;
             usuario.setUsuario(u);
+            notificaciones.setUsuario(u);
             return true;
         } catch (Exception e) {
             throw e;

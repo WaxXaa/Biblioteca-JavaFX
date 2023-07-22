@@ -104,14 +104,18 @@ public class OperacionesUsuario extends Operaciones{
         try {
             cnn = Conexion.establecerConexion();
             stmt = cnn.createStatement();
-            recordSet = stmt.executeQuery (
+            recordSet = stmt.executeQuery ("WITH PrestamosActuales AS (\n" +
+                    "  SELECT DISTINCT id_libro\n" +
+                    "  FROM Prestamos\n" +
+                    "  WHERE fecha_devolucion IS NULL\n" +
+                    ")\n" +
                     "SELECT L.*,\n" +
-                            "    CASE\n" +
-                            "        WHEN P.id_prestamo IS NOT NULL AND P.fecha_devolucion IS NULL THEN 'No disponible'\n" +
-                            "        ELSE 'Disponible'\n" +
-                            "    END AS disponibilidad\n" +
-                            "FROM Libro L\n" +
-                            "LEFT JOIN Prestamos P ON L.id_libro = P.id_libro WHERE L." + opcion + " like('%" + texto + "%')");
+                    "  CASE\n" +
+                    "    WHEN PA.id_libro IS NOT NULL THEN 'No disponible'\n" +
+                    "    ELSE 'Disponible'\n" +
+                    "  END AS disponibilidad\n" +
+                    "FROM Libro L\n" +
+                    "LEFT JOIN PrestamosActuales PA ON L.id_libro = PA.id_libro WHERE L." + opcion + " like('%" + texto + "%')");
             while (recordSet.next()) {
                 Libros_set_get libro = new Libros_set_get();
 
@@ -142,14 +146,18 @@ public class OperacionesUsuario extends Operaciones{
         try {
             cnn = Conexion.establecerConexion();
             stmt = cnn.createStatement();
-            recordSet = stmt.executeQuery (
+            recordSet = stmt.executeQuery ("WITH PrestamosActuales AS (\n" +
+                    "  SELECT DISTINCT id_libro\n" +
+                    "  FROM Prestamos\n" +
+                    "  WHERE fecha_devolucion IS NULL\n" +
+                    ")\n" +
                     "SELECT L.*,\n" +
-                            "    CASE\n" +
-                            "        WHEN P.id_prestamo IS NOT NULL AND P.fecha_devolucion IS NULL THEN 'No disponible'\n" +
-                            "        ELSE 'Disponible'\n" +
-                            "    END AS disponibilidad\n" +
-                            "FROM Libro L\n" +
-                            "LEFT JOIN Prestamos P ON L.id_libro = P.id_libro;");
+                    "  CASE\n" +
+                    "    WHEN PA.id_libro IS NOT NULL THEN 'No disponible'\n" +
+                    "    ELSE 'Disponible'\n" +
+                    "  END AS disponibilidad\n" +
+                    "FROM Libro L\n" +
+                    "LEFT JOIN PrestamosActuales PA ON L.id_libro = PA.id_libro;");
             while (recordSet.next()) {
                 Libros_set_get libro = new Libros_set_get();
 
@@ -175,23 +183,27 @@ public class OperacionesUsuario extends Operaciones{
     }
 
     //Listado de libros por devolver
-    public LinkedList<Prestamo_set_get> ListaDevolucion() throws Exception {
+    public LinkedList<Prestamo_set_get> ListaDevolucion(int id_usuario) throws Exception {
         Connection cnn = null;
         //Metodo que listara los libros por devolver para el usuario con titulo, autor, Fprestamo y Fdevolucion de la mas antigua a la mas reciente
         LinkedList<Prestamo_set_get> listaDevolucion = new LinkedList<Prestamo_set_get>();
         try {
             cnn = Conexion.establecerConexion();
             stmt = cnn.createStatement();
-            recordSet = stmt.executeQuery (
-                "SELECT Libro.titulo, Libro.autor, Prestamos.fecha_prestamo, Prestamos.fecha_devolucion\n" +
-                "FROM Libro\n"+
-                "JOIN Prestamos ON Libro.id_libro = Prestamos.id_libro\n"+
-                "ORDER BY Prestamos.fecha_prestamo ASC, Prestamos.fecha_devolucion ASC;" );
+            recordSet = stmt.executeQuery ("SELECT l.id_libro ,l.titulo, l.autor, p.fecha_prestamo\n" +
+                    "FROM Libro l\n" +
+                    "JOIN Prestamos p ON l.id_libro = p.id_libro\n" +
+                    "JOIN Usuario u on u.id_usuario = p.id_usuario\n" +
+                    "WHERE p.fecha_devolucion IS NULL and u.id_usuario = " + id_usuario );
             while (recordSet.next()) {
                 Prestamo_set_get devolucion = new Prestamo_set_get();
-
+                Libros_set_get libro = new Libros_set_get();
+                //poner libro y terminar la consulta
+                libro.setId_libro(recordSet.getInt("id_libro"));
+                libro.setTitulo(recordSet.getString("titulo"));
+                libro.setAutor(recordSet.getString("autor"));
+                devolucion.setLibro(libro);
                 devolucion.setFecha_prestamo(recordSet.getDate("fecha_prestamo"));
-                devolucion.setFecha_devolucion(recordSet.getDate("fecha_devolucion"));
                 listaDevolucion.add(devolucion);
             }
             return listaDevolucion;

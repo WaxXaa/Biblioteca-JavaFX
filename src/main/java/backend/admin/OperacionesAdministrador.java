@@ -23,14 +23,18 @@ public class OperacionesAdministrador extends Operaciones{
             conn = Conexion.establecerConexion();
             statement = conn.createStatement();
 
-            recordSet = statement.executeQuery(
+            recordSet = statement.executeQuery("WITH PrestamosActuales AS (\n" +
+                    "  SELECT DISTINCT id_libro\n" +
+                    "  FROM Prestamos\n" +
+                    "  WHERE fecha_devolucion IS NULL\n" +
+                    ")\n" +
                     "SELECT L.*,\n" +
-                    "    CASE\n" +
-                    "        WHEN P.id_prestamo IS NOT NULL AND P.fecha_devolucion IS NULL THEN 'No disponible'\n" +
-                    "        ELSE 'Disponible'\n" +
-                    "    END AS disponibilidad\n" +
+                    "  CASE\n" +
+                    "    WHEN PA.id_libro IS NOT NULL THEN 'No disponible'\n" +
+                    "    ELSE 'Disponible'\n" +
+                    "  END AS disponibilidad\n" +
                     "FROM Libro L\n" +
-                    "LEFT JOIN Prestamos P ON L.id_libro = P.id_libro;");
+                    "LEFT JOIN PrestamosActuales PA ON L.id_libro = PA.id_libro;");
             while (recordSet.next()) {
                 Libros_set_get libro = new Libros_set_get();
 

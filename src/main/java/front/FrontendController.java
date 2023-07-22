@@ -23,6 +23,7 @@ public class FrontendController extends Application {
     Administrador adm = new Administrador();
     AdministradorRegistroPrestamo admRegistroPrestamo = new AdministradorRegistroPrestamo();
     AdministradorRegistroDevolucion admRegistroDevolucion = new AdministradorRegistroDevolucion();
+    Notificaciones notificaciones = new Notificaciones();
     VBox vb1 = new VBox();
     HBox hb1 = new HBox();
 
@@ -90,13 +91,13 @@ public class FrontendController extends Application {
         loginUsuario.b2.setOnAction(e -> {
 
             try {
-                if (loginUsuario.ingresar(loginUsuario.obtenerNombre(), loginUsuario.obtenerCorreo(), usuario, operacionesUsuario)) {
+                if (loginUsuario.ingresar(loginUsuario.obtenerNombre(), loginUsuario.obtenerCorreo(), usuario,notificaciones, operacionesUsuario)) {
                     usuario.personalizarNombre();
                     stage.setScene(escenaPrincipalUsuario);
                     try {
                         usuario.buscarLibros();
                     } catch (Exception err) {
-                        usuario.mostrarErrorAlListarLibros(err.toString());
+                        usuario.mostrarErrorAlListar(err.toString());
                     }
                 }
                 else
@@ -110,10 +111,13 @@ public class FrontendController extends Application {
             }
 
         });
+        //volver a la escena de bienvenida
         loginUsuario.b4.setOnAction(e ->{
             stage.setScene(escenaBienvenida);
         } );
+        //volverde la escena de registro de usuario a la escena de ingreso
         registroUsuario.volver.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
+        //evento que controla el registro de usuarios
         registroUsuario.registrar.setOnAction(e -> {
             try {
                 boolean registro = registroUsuario.registrarUsuario(registroUsuario.comprobarSiHayDatosIntroducidos(), operacionesUsuario);
@@ -129,29 +133,39 @@ public class FrontendController extends Application {
         });
 
         //controlador de usuario
+        //evento para volver de la escena principal del usuario a la escena de ingreso
         usuario.volver.setOnAction(e -> {
             usuario.resetearEscenaUsuarios();
             stage.setScene(escenaIngresoUsuario);
         });
-
+        //evento que controla el mostrar las devoluciones pendientes
         usuario.imgGN.setOnMouseClicked(e -> {
-
+            notificaciones.resetearDevoluciones();
+            try {
+                notificaciones.listarProximasDevoluciones();
+                Notificaciones.mostrarNotificaciones();
+            }catch (Exception err) {
+             usuario.mostrarErrorAlListar(err.toString());
+            }
+            notificaciones.setUsuario(usuario.getUsuario());
         });
+        //evento que controla la busqueda de un libro especifico
         usuario.buscar.setOnAction(e -> {
             try {
                 usuario.buscarLibros();
 
             } catch (Exception err) {
-                usuario.mostrarErrorAlListarLibros(err.toString());
+                usuario.mostrarErrorAlListar(err.toString());
             }
         });
+        //evento que controla el mostrar todo el catalogo de libros al usuario
         usuario.catalogoEntero.setOnAction(e -> {
             try {
                 usuario.resetChoise();
                 usuario.buscarLibros();
 
             } catch (Exception err) {
-                usuario.mostrarErrorAlListarLibros(err.toString());
+                usuario.mostrarErrorAlListar(err.toString());
             }
         });
 

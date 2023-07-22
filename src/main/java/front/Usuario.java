@@ -26,8 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 public class Usuario {
-    OperacionesUsuario operacionesUsuario = new OperacionesUsuario();
-    Usuario_set_get usuario = new Usuario_set_get();
+    private OperacionesUsuario operacionesUsuario = new OperacionesUsuario();
+    private Usuario_set_get usuario = new Usuario_set_get();
     Label nombre = new Label();
     Label saludo = new Label("👋");
     VBox mainLayout = new VBox();
@@ -46,7 +46,7 @@ public class Usuario {
     Button catalogoEntero = new Button("todos los libros");
     public Usuario() {
         try {
-            Image imgN = new Image(new FileInputStream("C:\\Users\\Mosquera\\Documents\\Alejandro17\\Code_java\\menuS\\src\\main\\resources\\notification.png"));
+            Image imgN = new Image(new FileInputStream("/notification-path"));
             imgVN = new ImageInput(imgN);
         } catch (Exception e) {
 
@@ -102,6 +102,10 @@ public class Usuario {
         this.usuario = usuario;
     }
 
+    public Usuario_set_get getUsuario() {
+        return usuario;
+    }
+
     public void personalizarNombre() {
         nombre.setText("Bienvenido " + usuario.getNombre());
     }
@@ -154,7 +158,7 @@ public class Usuario {
             throw e;
         }
     }
-    public void mostrarErrorAlListarLibros(String mensaje) {
+    public void mostrarErrorAlListar(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("lo sentimos, Ha ocurrido un error");

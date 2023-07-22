@@ -3,27 +3,11 @@ package backend.modelos;
 import java.sql.Date;
 
 public final class Prestamo_set_get {
-    private int id_libro;
-    private int id_usuario;
+
     private Date fecha_prestamo;
     private Date fecha_devolucion;
-    
-    public int getId_libro() {
-        return id_libro ;
-    }
-
-    public void setId_libro(int id_libro) {
-        this.id_libro = id_libro;
-    }
-
-    public int getId_usuario() {
-        return id_usuario ;
-    }
-
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
+    private Usuario_set_get usuario;
+    private Libros_set_get libro;
     public Date getFecha_prestamo() {
         return fecha_prestamo;
     }
@@ -38,5 +22,21 @@ public final class Prestamo_set_get {
 
     public void setFecha_devolucion(Date fecha_devolucion) {
         this.fecha_devolucion = fecha_devolucion;
+    }
+
+    public Usuario_set_get getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario_set_get usuario) {
+        this.usuario = usuario;
+    }
+
+    public Libros_set_get getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libros_set_get libro) {
+        this.libro = libro;
     }
 }
