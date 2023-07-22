@@ -1,6 +1,7 @@
 package backend.admin;
 import backend.conexionsql.Conexion;
 import backend.modelos.Libros_set_get;
+import backend.operaciones.Operaciones;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,10 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
-public class OperacionesAdministrador {
+public class OperacionesAdministrador extends Operaciones{
     private Statement statement;
     private ResultSet recordSet;
-    public LinkedList<Libros_set_get> listarTodosLosLibros() throws Exception{
+    public LinkedList<Libros_set_get> listarLibros() throws Exception{
         /*
         * este metodo es para listar todos los libros por orden alfabetico del titulo
         * retorna una lista enlazada que almacena objetos de tipo Libros_set_get

@@ -1,5 +1,6 @@
 package front;
 
+import backend.user.OperacionesUsuario;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class FrontendController extends Application {
+    OperacionesUsuario operacionesUsuario = new OperacionesUsuario();
     LoginUsuario loginUsuario;
     RegistroUsuario registroUsuario;
     Usuario usuario = new Usuario();
@@ -88,9 +90,14 @@ public class FrontendController extends Application {
         loginUsuario.b2.setOnAction(e -> {
 
             try {
-                if (loginUsuario.ingresar(loginUsuario.obtenerNombre(), loginUsuario.obtenerCorreo(), usuario)) {
+                if (loginUsuario.ingresar(loginUsuario.obtenerNombre(), loginUsuario.obtenerCorreo(), usuario, operacionesUsuario)) {
                     usuario.personalizarNombre();
                     stage.setScene(escenaPrincipalUsuario);
+                    try {
+                        usuario.buscarLibros();
+                    } catch (Exception err) {
+                        usuario.mostrarErrorAlListarLibros(err.toString());
+                    }
                 }
                 else
                     loginUsuario.mostrarErrorAlIngresar("Credenciales Incorrectas");
@@ -107,12 +114,45 @@ public class FrontendController extends Application {
             stage.setScene(escenaBienvenida);
         } );
         registroUsuario.volver.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
+        registroUsuario.registrar.setOnAction(e -> {
+            try {
+                boolean registro = registroUsuario.registrarUsuario(registroUsuario.comprobarSiHayDatosIntroducidos(), operacionesUsuario);
+                if(registro) {
+                    registroUsuario.mostrarExitoAlRegistrar("su registro se ha realizado exitosamente");
+                    stage.setScene(escenaIngresoUsuario);
+                }
+                else
+                    registroUsuario.mostrarErrorAlRegistrar("por favor, ingrese nuevamente los datos");
+            }catch (Exception err) {
+                registroUsuario.mostrarErrorAlRegistrar(err.toString());
+            }
+        });
+
+        //controlador de usuario
         usuario.volver.setOnAction(e -> {
-            usuario.borrarNombre();
+            usuario.resetearEscenaUsuarios();
             stage.setScene(escenaIngresoUsuario);
         });
-        usuario.imgG.setOnMouseClicked(e -> {
 
+        usuario.imgGN.setOnMouseClicked(e -> {
+
+        });
+        usuario.buscar.setOnAction(e -> {
+            try {
+                usuario.buscarLibros();
+
+            } catch (Exception err) {
+                usuario.mostrarErrorAlListarLibros(err.toString());
+            }
+        });
+        usuario.catalogoEntero.setOnAction(e -> {
+            try {
+                usuario.resetChoise();
+                usuario.buscarLibros();
+
+            } catch (Exception err) {
+                usuario.mostrarErrorAlListarLibros(err.toString());
+            }
         });
 
         // controladores de administrador

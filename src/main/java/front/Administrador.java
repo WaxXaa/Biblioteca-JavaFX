@@ -2,11 +2,9 @@ package front;
 
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import backend.admin.OperacionesAdministrador;
 import backend.modelos.Libros_set_get;
 import java.util.LinkedList;
@@ -41,7 +39,8 @@ public class Administrador {
         opcionesListadoLayout.setSpacing(20);
         scrollPane.setPrefSize(700,400);
         scrollPane.setContent(listaLibros);
-        scrollPane.setStyle("-fx-bacground-color: #f7f8ff");
+        scrollPane.setStyle("-fx-background-color: #f7f8ff");
+        listaLibros.setStyle("-fx-background-color: #f7f8ff");
         listado.getChildren().addAll(opcionesListadoLayout,scrollPane);
         mainLayout.getChildren().addAll(opcionesMenu, listado);
         mainLayout.setStyle("-fx-padding: 20px;-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
@@ -71,7 +70,7 @@ public class Administrador {
         LinkedList<Libros_set_get> libros;
 
         try {
-            libros = operacionesAdministrador.listarTodosLosLibros();
+            libros = operacionesAdministrador.listarLibros();
             listaLibros.addRow(0,new Label("Identificador"),new Label("Dispinibilidad"),new Label("Título"), new Label("Autor"), new Label("Género"), new Label("Editorial"), new Label("ISBN"), new Label("Fecha de Publicación"));
             for (int i = 0; i < libros.size(); i++) {
                 int id = libros.get(i).getId_libro();

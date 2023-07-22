@@ -8,7 +8,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class LoginUsuario {
-    OperacionesUsuario operacionesUsuario = new OperacionesUsuario();
     GridPane gp1 = new GridPane();
     VBox mainLauoyt = new VBox();
     Button b2 = new Button("Ingresar");
@@ -52,7 +51,7 @@ public class LoginUsuario {
     public String obtenerNombre() {
         return nombre.getText();
     }
-    public boolean ingresar(String nombre, String correo, Usuario usuario) throws Exception{
+    public boolean ingresar(String nombre, String correo, Usuario usuario, OperacionesUsuario operacionesUsuario) throws Exception{
         Usuario_set_get u;
         try{
             u = operacionesUsuario.verificarUsuario(nombre,correo);
