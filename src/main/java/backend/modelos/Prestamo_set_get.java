@@ -1,9 +1,11 @@
 package backend.modelos;
 
+import java.sql.Date;
+
 public final class Prestamo_set_get {
     private int id_libro;
     private int id_usuario;
-    private Date fecha_prestamo; 
+    private Date fecha_prestamo;
     private Date fecha_devolucion;
     
     public int getId_libro() {
@@ -30,7 +32,7 @@ public final class Prestamo_set_get {
         this.fecha_prestamo = fecha_prestamo;
     }
 
-    public Date getFecha_prestamo() {
+    public Date getFecha_devolucion() {
         return fecha_prestamo;
     }
 

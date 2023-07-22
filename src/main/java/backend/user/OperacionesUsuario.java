@@ -1,6 +1,7 @@
 package backend.user;
 
 import backend.modelos.Libros_set_get;
+import backend.modelos.Prestamo_set_get;
 import backend.modelos.Usuario_set_get;
 
 import java.sql.Connection;
@@ -174,27 +175,26 @@ public class OperacionesUsuario extends Operaciones{
     }
 
     //Listado de libros por devolver
-    public LinkedList<Libros_set_get> ListaDevolucion() throws Exception {
+    public LinkedList<Prestamo_set_get> ListaDevolucion() throws Exception {
         Connection cnn = null;
         //Metodo que listara los libros por devolver para el usuario con titulo, autor, Fprestamo y Fdevolucion de la mas antigua a la mas reciente
-        LinkedList<Prestamo_set_get> ListaDevolucion = new LinkedList<Prestamo_set_get>();
+        LinkedList<Prestamo_set_get> listaDevolucion = new LinkedList<Prestamo_set_get>();
         try {
             cnn = Conexion.establecerConexion();
             stmt = cnn.createStatement();
-            recordSet = statement.executeQuery (
-                "SELECT Libro.titulo, Libro.autor, Prestamos.fecha_prestamo, Prestamos.fecha_devolucion
-                FROM Libro
-                JOIN Prestamos ON Libro.id_libro = Prestamos.id_libro
-                ORDER BY Prestamos.fecha_prestamo ASC, Prestamos.fecha_devolucion ASC;" )
+            recordSet = stmt.executeQuery (
+                "SELECT Libro.titulo, Libro.autor, Prestamos.fecha_prestamo, Prestamos.fecha_devolucion\n" +
+                "FROM Libro\n"+
+                "JOIN Prestamos ON Libro.id_libro = Prestamos.id_libro\n"+
+                "ORDER BY Prestamos.fecha_prestamo ASC, Prestamos.fecha_devolucion ASC;" );
             while (recordSet.next()) {
                 Prestamo_set_get devolucion = new Prestamo_set_get();
 
-                libro.setTitulo(recordSet.getString("titulo"));
-                libro.setAutor(recordSet.getString("autor"));
-                prestamos.setFecha_prestamo(recordSet.getDate("fecha_prestamo"));
-                prestamos.setFecha_devolucion(recordSet.getDate("fecha_devolucion"));
+                devolucion.setFecha_prestamo(recordSet.getDate("fecha_prestamo"));
+                devolucion.setFecha_devolucion(recordSet.getDate("fecha_devolucion"));
+                listaDevolucion.add(devolucion);
             }
-            return ListaDevolucion;
+            return listaDevolucion;
             } catch (SQLException e) {
                 throw e;
             }catch (Exception e) {
