@@ -60,4 +60,65 @@ public class OperacionesAdministrador extends Operaciones{
             }
         }
     }
+    public LinkedList<Prestamo_set_get> ListaDevolucion(int id_usuario) throws Exception {
+        String consulta = "";
+	    Connection conn = null;
+        //Metodo que listara TODOS los libros prestados y los ordenará por fecha.
+        LinkedList<Prestamo_set_get> listaPrestamos = new LinkedList<Prestamo_set_get>();
+        try {
+            conn = Conexion.establecerConexion();
+            stmt = conn.createStatement();
+	        consulta = = "SELECT l.id_libro, l.titulo, l.autor, u.nombre, u.apellido, p.fecha_prestamo, p.fecha_devolucion " +
+    				    "FROM Libro l " +
+    				    	"JOIN Prestamos p ON l.id_libro = p.id_libro " +
+    					    "JOIN Usuario u ON u.id_usuario = p.id_usuario " +
+    				    "ORDER BY " +
+    					    "CASE " +
+        					    "WHEN p.fecha_devolucion IS NULL THEN 0 " + 
+        					    "ELSE 1 " + 
+    					    "END, " +
+    				    "p.fecha_devolucion DESC;";
+            recordSet = stmt.executeQuery (consulta);
+            while (recordSet.next()) {
+                Prestamo_set_get registroPrestamo = new Prestamo_set_get();
+                Libros_set_get libro = new Libros_set_get();
+                Usuario_set_get usuario = new Usuario_set_get();
+		
+		        //Asignar los datos del libro prestadp
+                libro.setId_libro(recordSet.getInt("id_libro"));
+                libro.setTitulo(recordSet.getString("titulo"));
+                libro.setAutor(recordSet.getString("autor"));
+
+        		//Asignar los datos del Usuario que solicitó el Préstamo
+        		usuario.setNombre(recordSet.getString("nombre"));
+        		usuario.setApellido(recordSet.getString("apellido"));
+		
+		        //Agregar Registros
+                registroPrestamo.setLibro(libro);
+		        registroPrestamo.setUsuario(usuario);
+		
+		
+                registroPrestamo.setFecha_prestamo(recordSet.getDate("fecha_prestamo"));
+                
+                // Obtener la fecha_devolucion del registro
+                java.sql.Date fechaDevolucion = recordSet.getDate("fecha_devolucion");
+
+                // Verificar si la fecha_devolucion es NULL y cambiarlo por "Pendiente"
+                if (fechaDevolucion == null) {
+                    registroPrestamo.setFecha_devolucion("Pendiente");
+                } else {
+                    registroPrestamo.setFecha_devolucion(fechaDevolucion.toString()); // Convierte la fecha a una cadena legible
+                }
+                listaPrestamos.add(registroPrestamo);
+                }
+            return listaPrestamos;
+            } catch (SQLException e) {
+                throw e;
+            }catch (Exception e) {
+            throw e;
+            } finally {
+                if (conn != null)
+                conn.close();
+                }
+            }
 }
