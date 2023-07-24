@@ -121,4 +121,66 @@ public class OperacionesAdministrador extends Operaciones{
                 conn.close();
                 }
             }
+
+public void registrarPrestamo(int idLibro) throws Exception {
+                /*
+                 * Este método registra un préstamo para un libro específico dado su ID.
+                 * Recibe como parámetro el ID del libro que se va a prestar.
+                 */
+
+                Connection conn = null;
+                try {
+                    conn = Conexion.establecerConexion();
+                    statement = conn.createStatement();
+
+                    // Verificar si el libro está disponible antes de registrar el préstamo
+                    recordSet = statement.executeQuery("SELECT fecha_devolucion FROM Prestamos WHERE id_libro = " + idLibro);
+                    if (recordSet.next()) {
+                        // Si la consulta devuelve resultados, significa que el libro ya está prestado
+                        throw new Exception("El libro ya está prestado y no está disponible en este momento.");
+                    } else {
+                        // Si la consulta no devuelve resultados, el libro está disponible y se puede prestar
+                        statement.executeUpdate("INSERT INTO Prestamos (id_libro) VALUES (" + idLibro + ")");
+                    }
+                } catch (SQLException e) {
+                    throw e;
+                } catch (Exception e) {
+                    throw e;
+                } finally {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                }
+            }
+
+        public void registrarDevolucion(int idLibro) throws Exception {
+            /*
+             * Este método registra la devolución de un libro específico dado su ID.
+             * Recibe como parámetro el ID del libro que se va a devolver.
+             */
+
+            Connection conn = null;
+            try {
+                conn = Conexion.establecerConexion();
+                statement = conn.createStatement();
+
+                // Verificar si el libro está prestado antes de registrar la devolución
+                recordSet = statement.executeQuery("SELECT fecha_devolucion FROM Prestamos WHERE id_libro = " + idLibro);
+                if (recordSet.next()) {
+                    // Si la consulta devuelve resultados, significa que el libro está prestado y se puede devolver
+                    statement.executeUpdate("UPDATE Prestamos SET fecha_devolucion = NOW() WHERE id_libro = " + idLibro);
+                } else {
+                    // Si la consulta no devuelve resultados, significa que el libro no está prestado
+                    throw new Exception("El libro no está prestado actualmente y no se puede registrar la devolución.");
+                }
+            } catch (SQLException e) {
+                throw e;
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                if (conn != null) {
+                    conn.close();
+                }
+            }
+        }
 }
