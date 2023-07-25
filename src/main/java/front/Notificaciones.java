@@ -28,15 +28,21 @@ public class Notificaciones {
     Label mensajeConDevoluciones = new Label("ATENCION!, usted tiene libros pendientes por entregar!");
     public Notificaciones() {
         mensajeConDevoluciones.setStyle("-fx-text-fill: #D16677");
+        mensajeSinDevoluciones.setAlignment(Pos.TOP_CENTER);
+        mensajeSinDevoluciones.setStyle("-fx-font-size: 13; -fx-text-fill: #023047");
         mainLayout.setAlignment(Pos.TOP_CENTER);
         mainLayout.setStyle("-fx-background-color: #f7f8ff");
+        mainLayout.setMaxWidth(400);
+        mainLayout.setMaxHeight(250);
+        mainLayout.setAlignment(Pos.CENTER);
         scrollPane.setContent(devolucionesGrid);
         scrollPane.setStyle("-fx-background-color: #f7f8ff; -fx-padding: 2px");
         devolucionesGrid.setStyle("-fx-background-color: #f7f8ff");
         scrollPane.setPrefSize(400,250);
         devolucionesGrid.setMinWidth(400);
         devolucionesGrid.setMinHeight(250);
-
+        devolucionesGrid.setHgap(10);
+        devolucionesGrid.setVgap(10);
     }
     public static void mostrarNotificaciones() {
 
@@ -58,7 +64,8 @@ public class Notificaciones {
         try {
             listaDevoluciones = operacionesUsuario.ListaDevolucion(usuario.getId_usuario());
             if(listaDevoluciones.size() == 0) {
-                devolucionesGrid.addRow(0,mensajeSinDevoluciones);
+                System.out.println("sin devoluciones");
+                mainLayout.getChildren().addAll(mensajeSinDevoluciones,scrollPane);
             }
             else {
 
@@ -80,6 +87,7 @@ public class Notificaciones {
     }
     public void resetearDevoluciones() {
         devolucionesGrid.getChildren().clear();
+        mainLayout.getChildren().clear();
     }
 
     public Usuario_set_get getUsuario() {

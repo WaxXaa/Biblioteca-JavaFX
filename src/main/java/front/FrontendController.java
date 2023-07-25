@@ -195,6 +195,49 @@ public class FrontendController extends Application {
                 }
             }
         });
+        //evento al registrar prestamo
+        admRegistroPrestamo.registrar.setOnAction(e -> {
+            try{
+
+                if(admRegistroPrestamo.registrarPrestamo()){
+                    admRegistroPrestamo.mostrarMensaje("El prestamo se ha registrado  exitosamente", "REGISTRADO!", "Prestamo Registrado");
+                    try {
+                        adm.mostrarContenido();
+                    }catch (Exception y) {
+                        adm.mostrarErrorAlListarLibros("error al mostrar los libros \n" + y);
+                    }
+                    admRegistroPrestamo.resetearCampos();
+                    stage.setScene(escenaPrincipalAdministrador);
+                } else {
+                    admRegistroPrestamo.mostrarMensaje("No se ha podido registrar el Prestamo", "ERROR", "Prestamo no Registrado");
+                    admRegistroPrestamo.resetearCampos();
+                }
+            }catch (Exception err) {
+                admRegistroPrestamo.mostrarMensaje(err.getMessage(), "ERROR", "Lo sentimos, ha ocurrido");
+            }
+        });
+
+        admRegistroDevolucion.registrar.setOnAction(e -> {
+            try{
+
+                if(admRegistroDevolucion.registrarDevolucion()){
+                    admRegistroDevolucion.mostrarMensaje("La devolucion se ha registrado exitosamente", "REGISTRADO!", "Devolucion Registrada");
+                    try {
+                        adm.mostrarContenido();
+                    }catch (Exception y) {
+                        adm.mostrarErrorAlListarLibros("error al mostrar los libros \n" + y);
+                    }
+                    admRegistroDevolucion.resetearCampos();
+                    stage.setScene(escenaPrincipalAdministrador);
+                } else {
+                    admRegistroDevolucion.mostrarMensaje("No se ha podido registrar la devolucion", "ERROR", "devolucion no Registrada");
+                    admRegistroDevolucion.resetearCampos();
+                }
+            }catch (Exception err) {
+                admRegistroDevolucion.mostrarMensaje(err.getMessage(), "ERROR", "Lo sentimos, ha ocurrido");
+            }
+        });
+
         // evento para volverr de la escena de prestamo
         admRegistroPrestamo.volver.setOnAction(e -> {
             stage.setScene(escenaPrincipalAdministrador);
@@ -205,7 +248,7 @@ public class FrontendController extends Application {
             stage.setScene(escenaPrincipalAdministrador);
         });
         // stage config
-        stage.getIcons().add(new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdZTGDJuuflypoqDPVO-3gaT_bwGtNoJGCdA&usqp=CAU"));
+        stage.getIcons().add(new Image("C:\\Users\\Mosquera\\Documents\\Alejandro17\\Code_java\\menuS\\src\\main\\resources\\icon.png"));
         stage.setTitle("BIBLIOTECA");
         stage.setScene(escenaBienvenida);
         stage.show();

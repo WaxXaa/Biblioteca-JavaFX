@@ -46,7 +46,7 @@ public class Usuario {
     Button catalogoEntero = new Button("todos los libros");
     public Usuario() {
         try {
-            Image imgN = new Image(new FileInputStream("/notification-path"));
+            Image imgN = new Image(new FileInputStream("C:\\Users\\Mosquera\\Documents\\Alejandro17\\Code_java\\menuS\\src\\main\\resources\\notification.png"));
             imgVN = new ImageInput(imgN);
         } catch (Exception e) {
 
@@ -112,6 +112,7 @@ public class Usuario {
 
     public void resetearEscenaUsuarios() {
         nombre.setText("");
+        textField.setText("");
         resetChoise();
     }
     public void mostrarLibros() throws Exception{

@@ -1,7 +1,11 @@
 package front;
 
+import backend.admin.OperacionesAdministrador;
+import backend.modelos.Usuario_set_get;
+import backend.user.OperacionesUsuario;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -9,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class AdministradorRegistroDevolucion {
+    private OperacionesUsuario operacionesUsuario = new OperacionesUsuario();
+    private OperacionesAdministrador operacionesAdministrador = new OperacionesAdministrador();
     Label id_lb = new Label("Indetificador del Libro");
     Label nombre_lb = new Label("Nombre del Usuario");
     Label correo_lb = new Label("E-mail del Usuario");
@@ -44,5 +50,37 @@ public class AdministradorRegistroDevolucion {
         volver.setStyle("-fx-background-color: #dad7cd");
         volver.setCursor(Cursor.HAND);
         mainLayout.setStyle("-fx-padding: 20px;-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
+    }
+    public boolean registrarDevolucion() throws Exception {
+        try {
+            comprobarCamposIntroducidos();
+            Usuario_set_get us = operacionesUsuario.verificarUsuario(nombre_txt.getText(), correo_txt.getText());
+            if(us == null)
+                return false;
+            operacionesAdministrador.setUsuario(us);
+            return operacionesAdministrador.registrarDevolucion(Integer.parseInt(id_txt.getText()));
+        } catch (Exception e){
+            throw e;
+        }
+    }
+    public void mostrarMensaje(String mensaje, String titulo, String header) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        if(titulo.equals("ERROR"))
+            alert.setAlertType(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(header);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+    public void resetearCampos() {
+        id_txt.setText("");
+        nombre_txt.setText("");
+        correo_txt.setText("");
+    }
+    public void comprobarCamposIntroducidos() throws Exception {
+        String correo = correo_txt.getText();
+        String nombre = nombre_txt.getText();
+        if(correo.length() == 0 || nombre.length() == 0)
+            throw new Exception("ERROR, por favor complete los campos de nombre y correo");
     }
 }

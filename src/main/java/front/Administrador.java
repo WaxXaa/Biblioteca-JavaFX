@@ -1,5 +1,6 @@
 package front;
 
+import backend.modelos.Prestamo_set_get;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -24,7 +25,7 @@ public class Administrador {
     RadioButton radioLibros = new RadioButton("todos los libros");
     RadioButton radioPrestamos = new RadioButton("todos los prestamos");
     HBox opcionesListadoLayout = new HBox();
-    GridPane listaLibros = new GridPane();
+    GridPane lista = new GridPane();
     ScrollPane scrollPane = new ScrollPane();
     public Administrador() {
         radioLibros.setUserData("libros");
@@ -38,17 +39,17 @@ public class Administrador {
         opcionesListadoLayout.getChildren().addAll(radioLibros,radioPrestamos);
         opcionesListadoLayout.setSpacing(20);
         scrollPane.setPrefSize(700,400);
-        scrollPane.setContent(listaLibros);
+        scrollPane.setContent(lista);
         scrollPane.setStyle("-fx-background-color: #f7f8ff");
-        listaLibros.setStyle("-fx-background-color: #f7f8ff");
+        lista.setStyle("-fx-background-color: #f7f8ff");
         listado.getChildren().addAll(opcionesListadoLayout,scrollPane);
         mainLayout.getChildren().addAll(opcionesMenu, listado);
         mainLayout.setStyle("-fx-padding: 20px;-fx-background-color: linear-gradient(to right top, #ffffff, #f7f8ff, #edf1ff, #e1ebff, #d2e6ff);");
         mainLayout.setSpacing(40);
         opcionesMenu.setSpacing(40);
         listado.setSpacing(20);
-        listaLibros.setHgap(20);
-        listaLibros.setVgap(5);
+        lista.setHgap(20);
+        lista.setVgap(5);
 
         prestamo.setMinSize(200,30);
         devolucion.setMinSize(200,30);
@@ -71,7 +72,7 @@ public class Administrador {
 
         try {
             libros = operacionesAdministrador.listarLibros();
-            listaLibros.addRow(0,new Label("Identificador"),new Label("Dispinibilidad"),new Label("Título"), new Label("Autor"), new Label("Género"), new Label("Editorial"), new Label("ISBN"), new Label("Fecha de Publicación"));
+            lista.addRow(0,new Label("Identificador"),new Label("Disponibilidad"),new Label("Título"), new Label("Autor"), new Label("Género"), new Label("Editorial"), new Label("ISBN"), new Label("Fecha de Publicación"));
             for (int i = 0; i < libros.size(); i++) {
                 int id = libros.get(i).getId_libro();
                 String titulo = libros.get(i).getTitulo();
@@ -92,10 +93,42 @@ public class Administrador {
                     disponibilidad.setStyle("-fx-font-size: 14px; -fx-text-fill: #D16677");
                 }
 
-                listaLibros.addRow(i+1, new Label(String.valueOf(id)), disponibilidad, new Label(titulo),new Label(autor), new Label(genero), new Label(editorial), new Label(isbn), new Label(fechaFromateada));
+                lista.addRow(i+1, new Label(String.valueOf(id)), disponibilidad, new Label(titulo),new Label(autor), new Label(genero), new Label(editorial), new Label(isbn), new Label(fechaFromateada));
             }
         }catch (Exception e) {
             throw e;
+        }
+    }
+    public void listarPrestamos() throws Exception {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        LinkedList<Prestamo_set_get> listaPrestamos;
+        try {
+            listaPrestamos = operacionesAdministrador.obternerPrestamos();
+            lista.addRow(0,new Label("ID Prestamo"), new Label("ID libro Prestado"), new Label("Título"), new Label("Autor"), new Label("Nombre Prestatario"), new Label("Apellido Prestatario"), new Label("Fecha Prestamo"), new Label("Fecha Devolucion"));
+            for (int i = 0; i < listaPrestamos.size(); i++) {
+                int id_prestamo = listaPrestamos.get(i).getId_prestamo();
+                int id_libro = listaPrestamos.get(i).getLibro().getId_libro();
+                String titulo = listaPrestamos.get(i).getLibro().getTitulo();
+                String autor = listaPrestamos.get(i).getLibro().getAutor();
+                String nombre = listaPrestamos.get(i).getUsuario().getNombre();
+                String apellido = listaPrestamos.get(i).getUsuario().getApellido();
+                Date f_prestamo = listaPrestamos.get(i).getFecha_prestamo();
+                String f_pr = formato.format(f_prestamo);
+                String f_dv;
+                Label fechaDevolucion = new Label();
+                if(listaPrestamos.get(i).getFecha_devolucion() == null) {
+
+                    f_dv = "Pendiente";
+                    fechaDevolucion.setStyle("-fx-font-size: 14px; -fx-text-fill: #D16677");
+                    fechaDevolucion.setText(f_dv);
+                } else {
+                    f_dv = formato.format(listaPrestamos.get(i).getFecha_devolucion());
+                    fechaDevolucion.setText(f_dv);
+                }
+                lista.addRow(i+1, new Label(String.valueOf(id_prestamo)), new Label(String.valueOf(id_libro)), new Label(titulo), new Label(autor), new Label(nombre), new Label(apellido), new Label(f_pr), fechaDevolucion);
+            }
+        }catch (Exception err) {
+            throw err;
         }
     }
     public void mostrarErrorAlListarLibros(String mensaje) {
@@ -117,11 +150,18 @@ public class Administrador {
             }catch (Exception e) {
                 throw e;
             }
+        } else {
+            try {
+                listarPrestamos();
+            }catch (Exception e) {
+                throw e;
+            }
         }
     }
     public void mostrarContenido() throws Exception {
         //y este metodo lista es para cada vez que la escena del stage cambia a la escena principal del administrador
         borrarContenido();
+        opcionesListado.selectToggle(radioLibros);
         try {
             listarLibros();
         }catch (Exception e) {
@@ -129,7 +169,7 @@ public class Administrador {
         }
     }
     public void borrarContenido() {
-        listaLibros.getChildren().clear();
+        lista.getChildren().clear();
     }
 
 }

@@ -1,6 +1,8 @@
 package backend.admin;
 import backend.conexionsql.Conexion;
 import backend.modelos.Libros_set_get;
+import backend.modelos.Prestamo_set_get;
+import backend.modelos.Usuario_set_get;
 import backend.operaciones.Operaciones;
 
 import java.sql.Connection;
@@ -12,6 +14,16 @@ import java.util.LinkedList;
 public class OperacionesAdministrador extends Operaciones{
     private Statement statement;
     private ResultSet recordSet;
+    private Usuario_set_get usuario = new Usuario_set_get();
+
+    public Usuario_set_get getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario_set_get usuario) {
+        this.usuario = usuario;
+    }
+
     public LinkedList<Libros_set_get> listarLibros() throws Exception{
         /*
         * este metodo es para listar todos los libros por orden alfabetico del titulo
@@ -60,25 +72,28 @@ public class OperacionesAdministrador extends Operaciones{
             }
         }
     }
-    public LinkedList<Prestamo_set_get> ListaDevolucion(int id_usuario) throws Exception {
+    public LinkedList<Prestamo_set_get> obternerPrestamos() throws Exception {
         String consulta = "";
 	    Connection conn = null;
         //Metodo que listara TODOS los libros prestados y los ordenará por fecha.
         LinkedList<Prestamo_set_get> listaPrestamos = new LinkedList<Prestamo_set_get>();
         try {
             conn = Conexion.establecerConexion();
-            stmt = conn.createStatement();
-	        consulta = = "SELECT l.id_libro, l.titulo, l.autor, u.nombre, u.apellido, p.fecha_prestamo, p.fecha_devolucion " +
-    				    "FROM Libro l " +
-    				    	"JOIN Prestamos p ON l.id_libro = p.id_libro " +
-    					    "JOIN Usuario u ON u.id_usuario = p.id_usuario " +
-    				    "ORDER BY " +
-    					    "CASE " +
-        					    "WHEN p.fecha_devolucion IS NULL THEN 0 " + 
-        					    "ELSE 1 " + 
-    					    "END, " +
-    				    "p.fecha_devolucion DESC;";
-            recordSet = stmt.executeQuery (consulta);
+            statement = conn.createStatement();
+	        consulta = "SELECT \n" +
+                    "    p.id_prestamo,\n"+
+                    "    l.id_libro, \n" +
+                    "    l.titulo, \n" +
+                    "    l.autor, \n" +
+                    "    u.nombre, \n" +
+                    "    u.apellido, \n" +
+                    "    p.fecha_prestamo,\n" +
+                    "    p.fecha_devolucion\n" +
+                    "FROM Libro l\n" +
+                    "JOIN Prestamos p ON l.id_libro = p.id_libro\n" +
+                    "JOIN Usuario u ON u.id_usuario = p.id_usuario\n" +
+                    "ORDER BY 1 DESC;";
+            recordSet = statement.executeQuery (consulta);
             while (recordSet.next()) {
                 Prestamo_set_get registroPrestamo = new Prestamo_set_get();
                 Libros_set_get libro = new Libros_set_get();
@@ -97,18 +112,15 @@ public class OperacionesAdministrador extends Operaciones{
                 registroPrestamo.setLibro(libro);
 		        registroPrestamo.setUsuario(usuario);
 		
-		
+		        registroPrestamo.setId_prestamo(recordSet.getInt("id_prestamo"));
                 registroPrestamo.setFecha_prestamo(recordSet.getDate("fecha_prestamo"));
                 
                 // Obtener la fecha_devolucion del registro
-                java.sql.Date fechaDevolucion = recordSet.getDate("fecha_devolucion");
+
 
                 // Verificar si la fecha_devolucion es NULL y cambiarlo por "Pendiente"
-                if (fechaDevolucion == null) {
-                    registroPrestamo.setFecha_devolucion("Pendiente");
-                } else {
-                    registroPrestamo.setFecha_devolucion(fechaDevolucion.toString()); // Convierte la fecha a una cadena legible
-                }
+                if(recordSet.getDate("fecha_devolucion") != null)
+                    registroPrestamo.setFecha_devolucion(recordSet.getDate("fecha_devolucion"));
                 listaPrestamos.add(registroPrestamo);
                 }
             return listaPrestamos;
@@ -122,38 +134,36 @@ public class OperacionesAdministrador extends Operaciones{
                 }
             }
 
-public void registrarPrestamo(int idLibro) throws Exception {
-                /*
-                 * Este método registra un préstamo para un libro específico dado su ID.
-                 * Recibe como parámetro el ID del libro que se va a prestar.
-                 */
+    public boolean registrarPrestamo(int id_libro) throws Exception {
+        /*
+         * Este método registra un préstamo para un libro específico dado su ID.
+         * Recibe como parámetro el ID del libro que se va a prestar.
+         */
 
-                Connection conn = null;
-                try {
-                    conn = Conexion.establecerConexion();
-                    statement = conn.createStatement();
+        Connection conn = null;
+        try {
+            conn = Conexion.establecerConexion();
+            statement = conn.createStatement();
 
-                    // Verificar si el libro está disponible antes de registrar el préstamo
-                    recordSet = statement.executeQuery("SELECT fecha_devolucion FROM Prestamos WHERE id_libro = " + idLibro);
-                    if (recordSet.next()) {
-                        // Si la consulta devuelve resultados, significa que el libro ya está prestado
-                        throw new Exception("El libro ya está prestado y no está disponible en este momento.");
-                    } else {
-                        // Si la consulta no devuelve resultados, el libro está disponible y se puede prestar
-                        statement.executeUpdate("INSERT INTO Prestamos (id_libro) VALUES (" + idLibro + ")");
-                    }
-                } catch (SQLException e) {
-                    throw e;
-                } catch (Exception e) {
-                    throw e;
-                } finally {
-                    if (conn != null) {
-                        conn.close();
-                    }
-                }
+            // Verificar si el libro está disponible antes de registrar el préstamo
+            recordSet = statement.executeQuery("SELECT fecha_devolucion FROM Prestamos WHERE id_libro = " + id_libro + " and fecha_devolucion is null");
+            if (recordSet.next())
+                return false;
+            else
+                statement.executeUpdate("INSERT INTO Prestamos (id_libro, id_usuario, fecha_prestamo) VALUES (" + id_libro + ", " + usuario.getId_usuario() + ", CONVERT(DATE, GETDATE()))");
+            return true;
+        } catch (SQLException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.close();
             }
+        }
+    }
 
-        public void registrarDevolucion(int idLibro) throws Exception {
+        public boolean registrarDevolucion(int id_libro) throws Exception {
             /*
              * Este método registra la devolución de un libro específico dado su ID.
              * Recibe como parámetro el ID del libro que se va a devolver.
@@ -165,14 +175,13 @@ public void registrarPrestamo(int idLibro) throws Exception {
                 statement = conn.createStatement();
 
                 // Verificar si el libro está prestado antes de registrar la devolución
-                recordSet = statement.executeQuery("SELECT fecha_devolucion FROM Prestamos WHERE id_libro = " + idLibro);
+                recordSet = statement.executeQuery("SELECT id_prestamo, fecha_devolucion FROM Prestamos WHERE id_libro = " + id_libro + " and id_usuario = " + usuario.getId_usuario() +" and fecha_devolucion is null");
                 if (recordSet.next()) {
                     // Si la consulta devuelve resultados, significa que el libro está prestado y se puede devolver
-                    statement.executeUpdate("UPDATE Prestamos SET fecha_devolucion = NOW() WHERE id_libro = " + idLibro);
-                } else {
-                    // Si la consulta no devuelve resultados, significa que el libro no está prestado
-                    throw new Exception("El libro no está prestado actualmente y no se puede registrar la devolución.");
-                }
+                    statement.executeUpdate("UPDATE Prestamos SET fecha_devolucion = CONVERT(DATE, GETDATE()) WHERE id_prestamo = " + recordSet.getInt("id_prestamo"));
+                    return true;
+                } else
+                    return false;
             } catch (SQLException e) {
                 throw e;
             } catch (Exception e) {
