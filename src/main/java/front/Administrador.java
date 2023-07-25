@@ -13,7 +13,6 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 public class Administrador {
     OperacionesAdministrador operacionesAdministrador = new OperacionesAdministrador();
-    Libros_set_get libro = new Libros_set_get();
     HBox mainLayout = new HBox();
     VBox opcionesMenu = new VBox();
     Button prestamo = new Button("registrar prestamo");

@@ -10,7 +10,7 @@ public final class Usuario_set_get {
     private String telefono;
     private String correo;
     private int id_usuario;
-
+    private int num_prestamos;
     public String getNombre() {
         return nombre;
     }
@@ -57,5 +57,13 @@ public final class Usuario_set_get {
 
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
+    }
+
+    public int getNum_prestamos() {
+        return num_prestamos;
+    }
+
+    public void setNum_prestamos(int num_prestamos) {
+        this.num_prestamos = num_prestamos;
     }
 }

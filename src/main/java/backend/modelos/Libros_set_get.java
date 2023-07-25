@@ -13,6 +13,7 @@ public class Libros_set_get {
     private String editorial;
     private int id_libro;
     private String dispinibilidad;
+    private int cantidad_prestamos;
 
     public String getTitulo() {
         return titulo;
@@ -76,5 +77,13 @@ public class Libros_set_get {
 
     public void setDispinibilidad(String dispinibilidad) {
         this.dispinibilidad = dispinibilidad;
+    }
+
+    public int getCantidad_prestamos() {
+        return cantidad_prestamos;
+    }
+
+    public void setCantidad_prestamos(int cantidad_prestamos) {
+        this.cantidad_prestamos = cantidad_prestamos;
     }
 }

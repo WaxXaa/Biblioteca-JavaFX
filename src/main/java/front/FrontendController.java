@@ -24,6 +24,7 @@ public class FrontendController extends Application {
     AdministradorRegistroPrestamo admRegistroPrestamo = new AdministradorRegistroPrestamo();
     AdministradorRegistroDevolucion admRegistroDevolucion = new AdministradorRegistroDevolucion();
     Notificaciones notificaciones = new Notificaciones();
+    Informes informes = new Informes();
     VBox vb1 = new VBox();
     HBox hb1 = new HBox();
 
@@ -34,6 +35,7 @@ public class FrontendController extends Application {
     Scene escenaPrincipalAdministrador;
     Scene escenaAdministradorRegistro;
     Scene escenaAdministradorDevolucion;
+    Scene escenaInformes;
 
 
     @Override
@@ -68,6 +70,7 @@ public class FrontendController extends Application {
         escenaPrincipalAdministrador = new Scene(adm.mainLayout,1000,500);
         escenaAdministradorRegistro = new Scene(admRegistroPrestamo.mainLayout,1000,500);
         escenaAdministradorDevolucion = new Scene(admRegistroDevolucion.mainLayout, 1000,500);
+        escenaInformes = new Scene(informes.mainLayout, 1000,500);
         escenaPrincipalUsuario = new Scene(usuario.mainLayout, 1000, 500);
         //estos son los evento al presionar los botones de la escena bienvenida
         user.setOnAction(e -> stage.setScene(escenaIngresoUsuario));
@@ -171,7 +174,6 @@ public class FrontendController extends Application {
 
         // controladores de administrador
         adm.volver.setOnAction(e -> {
-
             stage.setScene(escenaBienvenida);
         });
         //evento para dirigir a la escena de registro de prestamo
@@ -245,6 +247,31 @@ public class FrontendController extends Application {
 
         // evento para volver de la escena de devoluciones
         admRegistroDevolucion.volver.setOnAction(e -> {
+            stage.setScene(escenaPrincipalAdministrador);
+        });
+
+        adm.informes.setOnAction(e -> {
+            stage.setScene(escenaInformes);
+            try {
+                informes.mostrarContenido();
+            }catch (Exception ex) {
+                informes.mostrarMensajeAlRealizarInformes("Lo sentimos, ha ocurrido un error al realizar los informes" + ex);
+            }
+        });
+        informes.opcionesListado.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                try {
+                    informes.mostrarContenido(informes.opcionesListado.getSelectedToggle().getUserData().toString());
+                }catch (Exception e) {
+                    //en caso de que ocurra un error al obtener los libros de la BD se desplegara un mensaje de error
+                    //para desplegar el mensaje se llama a el metodo  y se le pasa el mensaje
+                    informes.mostrarMensajeAlRealizarInformes("Lo sentimos, ha ocurrido un error al realizar los informes" + e);
+                }
+            }
+        });
+
+        informes.volver.setOnAction(e -> {
             stage.setScene(escenaPrincipalAdministrador);
         });
         // stage config
